@@ -4,11 +4,12 @@ use crate::common::ValueArray;
 use crate::common::Value;
 use anyhow::Ok;
 use anyhow::Result;
+#[derive(Clone, Copy)]
 pub enum OpCode {
     Return,
     Constant(usize),
 }
-
+#[derive(Clone)]
 pub struct  Chunk{
     pub code:Vec<OpCode>,
     pub lines:Vec<i32>,
@@ -37,7 +38,7 @@ impl Chunk{
         }
         Ok(())
     }
-    fn disassemble_op_code(&self,op_code:&OpCode)->Result<String>{
+    pub fn disassemble_op_code(&self,op_code:&OpCode)->Result<String>{
         use OpCode::*;
         match op_code {
             Return=>{

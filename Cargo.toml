@@ -3,5 +3,8 @@ name = "lox_vm"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+debug-trace = []
+
 [dependencies]
 anyhow = { version = "1.0", default-features = false }
