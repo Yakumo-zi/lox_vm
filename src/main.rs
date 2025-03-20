@@ -1,23 +1,39 @@
+mod chunk;
 mod common;
 mod vm;
-mod chunk;
-use chunk::OpCode;
 use anyhow::Result;
+use std::io::{self, BufRead, Write};
 use vm::VM;
-fn main()->Result<()> {
-    let mut chunk =chunk::Chunk::new();
-    let idx = chunk.add_constant(10.0);
-    chunk.write(OpCode::Constant(idx),123);
-    chunk.write(OpCode::Negate, 123);
-    let idx=chunk.add_constant(20.0);
-    chunk.write(OpCode::Constant(idx), 123);
-    chunk.write(OpCode::Add, 123);
-    chunk.write(OpCode::Return,123);
-    #[cfg(feature = "debug-trace")]
-    {
-         chunk.disassemble("test chunk")?;
+
+fn main() -> Result<()> {
+    let args: Vec<String> = std::env::args().collect();
+    match args.len() {
+        0 => println!("Usage: lox_vm [path]"),
+        1 => repl(),
+        2 => {
+            let path = &args[1];
+            run_file(path);
+        }
+        _ => println!("Too many arguments"),
     }
-    let mut vm = VM::new();
-    vm.interpret(chunk)?;
     Ok(())
 }
+
+fn repl() {
+    let mut vm = VM::new();
+    let mut reader = io::BufReader::new(io::stdin());
+    let mut input = String::new();
+
+    loop {
+        print!("> ");
+        io::stdout().flush().unwrap();
+
+        if let Ok(bytes) = reader.read_line(&mut input) {
+            if bytes > 0 {
+               
+            }
+        }
+    }
+}
+
+fn run_file(path: &str) {}
