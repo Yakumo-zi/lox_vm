@@ -1,7 +1,12 @@
 mod common;
 mod chunk;
-fn main() {
+use chunk::OpCode;
+use anyhow::Result;
+fn main()->Result<()> {
     let mut chunk =chunk::Chunk::new();
-    chunk.write(chunk::OpCode::OpReturn);
-    chunk.disassemble("test chunk");
+    let idx = chunk.add_constant(1.2);
+    chunk.write(OpCode::Constant(idx));
+    chunk.write(OpCode::Return);
+    chunk.disassemble("test chunk")?;
+    Ok(())
 }
