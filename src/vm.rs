@@ -1,9 +1,11 @@
-use crate::chunk::{Chunk, OpCode};
+use crate::{chunk::{Chunk, OpCode}, common::Value};
 use anyhow::{Ok, Result};
-
+const MAX_STACK_SIZE:usize = 256;
 pub struct VM {
     chunk:Chunk,
     ip:usize,
+    stack:Vec<Value>,
+    top:usize,
 }
 pub enum InterpretResult{
     Ok,
@@ -13,7 +15,7 @@ pub enum InterpretResult{
 
 impl VM{
     pub fn new()->VM{
-        VM { chunk: Chunk::new(),ip:0 }
+        VM { chunk: Chunk::new(),ip:0,stack:Vec::new(),top:0}
     }
     pub fn interpret(&mut self,chunk:Chunk)->Result<InterpretResult>{
         self.chunk=chunk;
