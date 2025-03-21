@@ -1,6 +1,5 @@
-use std::{future::pending, iter::Scan, ops::Not};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug,Clone, PartialEq)]
 pub enum TokenType {
     // Single-character tokens
     LeftParen,
@@ -71,7 +70,7 @@ pub struct Scanner {
     start: usize,
     current: usize,
     source: String,
-    line: i32,
+    pub line: i32,
 }
 impl Scanner {
     pub fn new(source: &str) -> Scanner {

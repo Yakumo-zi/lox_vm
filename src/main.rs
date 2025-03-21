@@ -2,6 +2,7 @@ mod chunk;
 mod common;
 mod vm;
 mod scanner;
+mod compiler;
 use anyhow::Result;
 use std::io::{self, BufRead, Write};
 use vm::VM;
@@ -43,6 +44,7 @@ fn repl() -> Result<()> {
 
 fn run_file(path: &str) -> Result<()> {
     let contents = std::fs::read_to_string(path)?;
-    println!("Read {} bytes from {}", contents.len(), path);
+    let mut vm = VM::new();
+    vm.interpret(&contents)?;
     Ok(())
 }

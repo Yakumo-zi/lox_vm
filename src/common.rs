@@ -1,7 +1,7 @@
 use anyhow::Result;
 
 pub type Value=f64;
-#[derive(Clone)]
+#[derive(Clone,Default)]
 pub struct  ValueArray {
     values:Vec<Value>
 }

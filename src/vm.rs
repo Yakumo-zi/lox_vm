@@ -2,10 +2,9 @@
 use std::ops::Neg;
 
 use crate::{
-    chunk::{Chunk, OpCode},
-    common::Value, scanner::Scanner,
+    chunk::{Chunk, OpCode}, common::Value, compiler::Compiler, scanner::Scanner
 };
-use anyhow::{Ok, Result, anyhow};
+use anyhow::{Result, anyhow};
 pub struct VM {
     chunk: Chunk,
     ip: usize,
@@ -20,20 +19,23 @@ pub enum InterpretResult {
 impl VM {
     pub fn new() -> VM {
         VM {
-            chunk: Chunk::new(),
+            chunk: Chunk::default(),
             ip: 0,
             stack: Vec::new(),
         }
     }
     pub fn interpret(&mut self, source: &str) -> Result<InterpretResult> {
-        self.compile(source);
-        return Ok(InterpretResult::Ok)
-    }
-    fn compile(&mut self,source:&str){
-        let mut scanner=Scanner::new(source);
-        while let Some(tok)=scanner.scan_token(){
-            println!("{:#?}",tok)
+        let mut compiler=Compiler::new(source);
+        let res=compiler.compile();
+        match res {
+            Ok(chunk) => {
+                self.chunk=chunk
+            },
+            Err(err) => {
+                return Ok(InterpretResult::CompileError)
+            },
         }
+        return Ok(InterpretResult::Ok)
     }
     fn run(&mut self) -> Result<InterpretResult> {
         loop {

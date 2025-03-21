@@ -13,7 +13,7 @@ pub enum OpCode {
     Multiply,
     Divide,
 }
-#[derive(Clone)]
+#[derive(Clone,Default)]
 pub struct Chunk {
     pub code: Vec<OpCode>,
     pub lines: Vec<i32>,
