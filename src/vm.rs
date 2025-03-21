@@ -3,7 +3,7 @@ use std::ops::Neg;
 
 use crate::{
     chunk::{Chunk, OpCode},
-    common::Value,
+    common::Value, scanner::Scanner,
 };
 use anyhow::{Ok, Result, anyhow};
 pub struct VM {
@@ -25,11 +25,15 @@ impl VM {
             stack: Vec::new(),
         }
     }
-    pub fn interpret(&mut self, chunk: Chunk) -> Result<InterpretResult> {
-        self.chunk = chunk;
-        self.ip = 0;
-        let ret = self.run()?;
-        Ok(ret)
+    pub fn interpret(&mut self, source: &str) -> Result<InterpretResult> {
+        self.compile(source);
+        return Ok(InterpretResult::Ok)
+    }
+    fn compile(&mut self,source:&str){
+        let mut scanner=Scanner::new(source);
+        while let Some(tok)=scanner.scan_token(){
+            println!("{:#?}",tok)
+        }
     }
     fn run(&mut self) -> Result<InterpretResult> {
         loop {
